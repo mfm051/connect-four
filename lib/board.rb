@@ -14,4 +14,6 @@ class Board
       return column_to_drop[i] = symbol
     end
   end
+
+  def column_available?(col_index) = @columns[col_index].any?
 end

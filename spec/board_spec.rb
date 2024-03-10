@@ -43,4 +43,22 @@ describe Board do
       end
     end
   end
+
+  describe '#column_available?' do
+    subject(:board0full1empty) { described_class.new }
+
+    before do
+      6.times { board0full1empty.drop_in_column(0, 'X') }
+    end
+
+    it 'returns true if given column has any spot available' do
+      col_full_index = 0
+      expect(board0full1empty.column_available?(col_full_index)).to eq(true)
+    end
+
+    it 'returns false if given column has no spot available' do
+      col_empty_index = 1
+      expect(board0full1empty.column_available?(col_empty_index)).to eq(false)
+    end
+  end
 end
