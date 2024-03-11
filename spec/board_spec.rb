@@ -61,4 +61,23 @@ describe Board do
       expect(board0full1empty.column_available?(col_empty_index)).to eq(false)
     end
   end
+
+  describe '#full?' do
+    subject(:board_full) { described_class.new }
+
+    before do
+      (0..6).each do |i|
+        6.times { board_full.drop_in_column(i, 'X') }
+      end
+    end
+
+    it 'returns true if board is full' do
+      expect(board_full.full?).to eq(true)
+    end
+
+    it 'returns false if board is not full' do
+      board_empty = described_class.new
+      expect(board_empty.full?).to eq(false)
+    end
+  end
 end

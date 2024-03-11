@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ConnectFour board
 class Board
   def initialize
     @columns = Array.new(7) { Array.new(6) }
@@ -16,4 +17,6 @@ class Board
   end
 
   def column_available?(col_index) = @columns[col_index].any?
+
+  def full? = @columns.all?(&:all?)
 end
