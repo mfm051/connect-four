@@ -7,9 +7,9 @@ describe Board do
 
   describe '#drop_in_column' do
     it 'marks first element available in column' do
-      symbol_dropped = 'X'
+      symbol = 'X'
       column_first = board_empty.instance_variable_get(:@columns)[0]
-      expect { board_empty.drop_in_column(0, symbol_dropped) }.to change { column_first[0] }.to symbol_dropped
+      expect { board_empty.drop_in_column(0, symbol) }.to change { column_first[0] }.to symbol
     end
 
     context 'when there is already a marked position' do
@@ -19,137 +19,147 @@ describe Board do
       let(:column_first) { board_one_pos.instance_variable_get(:@columns)[0] }
 
       it 'marks next available element' do
-        symbol_dropped = 'O'
-        expect { board_one_pos.drop_in_column(0, symbol_dropped) }.to change { column_first[1] }.to symbol_dropped
+        symbol = 'O'
+        expect { board_one_pos.drop_in_column(0, symbol) }.to change { column_first[1] }.to symbol
       end
 
       it 'does not change previous elements' do
-        symbol_dropped = 'O'
-        expect { board_one_pos.drop_in_column(0, symbol_dropped) }.not_to(change { column_first[0] })
+        symbol = 'O'
+        expect { board_one_pos.drop_in_column(0, symbol) }.not_to(change { column_first[0] })
       end
     end
 
     context 'when column is full' do
       subject(:board_full_col) { described_class.new }
-      let(:column_full) { board_full_col.instance_variable_get(:@columns)[0] }
 
       before do
-        6.times { board_full_col.drop_in_column(0, 'X') }
+        full_col_index = 0
+        6.times { board_full_col.drop_in_column(full_col_index, 'X') }
       end
 
+      let(:column_full) { board_full_col.instance_variable_get(:@columns)[0] }
+
       it 'does not change column' do
-        different_symbol = 'O'
-        expect { board_full_col.drop_in_column(0, different_symbol) }.not_to(change { column_full })
+        symbol_different = 'O'
+        expect { board_full_col.drop_in_column(0, symbol_different) }.not_to(change { column_full })
       end
     end
   end
 
   describe '#column_available?' do
-    subject(:board0full1empty) { described_class.new }
+    subject(:board_0full1empty) { described_class.new }
 
     before do
-      6.times { board0full1empty.drop_in_column(0, 'X') }
+      6.times { board_0full1empty.drop_in_column(0, 'X') }
     end
 
     it 'returns true if given column has any spot available' do
       col_full_index = 0
-      expect(board0full1empty.column_available?(col_full_index)).to eq(true)
+      expect(board_0full1empty.column_available?(col_full_index)).to eq(true)
     end
 
     it 'returns false if given column has no spot available' do
       col_empty_index = 1
-      expect(board0full1empty.column_available?(col_empty_index)).to eq(false)
+      expect(board_0full1empty.column_available?(col_empty_index)).to eq(false)
     end
   end
 
   describe '#full?' do
-    subject(:board_full) { described_class.new }
+    context 'when board is full' do
+      subject(:board_full) { described_class.new }
 
-    before do
-      (0..6).each do |i|
-        6.times { board_full.drop_in_column(i, 'X') }
+      before do
+        (0..6).each do |col_i|
+          6.times { board_full.drop_in_column(col_i, 'X') }
+        end
+      end
+
+      it 'returns true' do
+        expect(board_full.full?).to eq(true)
       end
     end
 
-    it 'returns true if board is full' do
-      expect(board_full.full?).to eq(true)
+    context 'when board is not completely full' do
+      subject(:board_not_full) { described_class.new }
+      before { board_not_full.drop_in_column(0, 'X') }
+
+      it 'returns false if board is not completely full' do
+        expect(board_not_full.full?).to eq(false)
+      end
     end
 
-    it 'returns false if board is not completely full' do
-      board_not_full = described_class.new
-      board_not_full.drop_in_column(0, 'X')
-      expect(board_not_full.full?).to eq(false)
-    end
+    context 'when board is empty' do
+      subject(:board_empty) { described_class.new }
 
-    it 'returns false if board is empty' do
-      board_empty = described_class.new
-      expect(board_empty.full?).to eq(false)
+      it 'returns false if board is empty' do
+        expect(board_empty.full?).to eq(false)
+      end
     end
   end
 
   describe '#four_in_column?' do
-    context 'When there are four equal marks in a column' do
-      subject(:board_four_equal_in_column) { described_class.new }
+    context 'when there are four equal marks in a column' do
+      subject(:board_four_equal_in_column0) { described_class.new }
 
       before do
-        4.times { board_four_equal_in_column.drop_in_column(0, 'X') }
+        4.times { board_four_equal_in_column0.drop_in_column(0, 'X') }
       end
 
       it 'returns true' do
         col_index = 0
         symbol = 'X'
-        expect(board_four_equal_in_column.four_in_column?(col_index, symbol)).to eq(true)
+        expect(board_four_equal_in_column0.four_in_column?(col_index, symbol)).to eq(true)
       end
     end
 
     context 'When there are four marks in a column that are not equal' do
-      subject(:board_four_different_in_column) { described_class.new }
+      subject(:board_four_different_in_column0) { described_class.new }
 
       before do
-        2.times { board_four_different_in_column.drop_in_column(0, 'X') }
-        2.times { board_four_different_in_column.drop_in_column(0, 'O') }
+        2.times { board_four_different_in_column0.drop_in_column(0, 'X') }
+        2.times { board_four_different_in_column0.drop_in_column(0, 'O') }
       end
 
       it 'returns false' do
         col_index = 0
         symbol = 'X'
-        expect(board_four_different_in_column.four_in_column?(col_index, symbol)).to eq(false)
+        expect(board_four_different_in_column0.four_in_column?(col_index, symbol)).to eq(false)
       end
     end
   end
 
   describe '#four_in_line?' do
     context 'when there are four equal marks in a line' do
-      subject(:board_four_equal_in_line) { described_class.new }
+      subject(:board_four_equal_in_line0) { described_class.new }
 
       before do
-        board_four_equal_in_line.drop_in_column(0, 'X')
-        board_four_equal_in_line.drop_in_column(1, 'X')
-        board_four_equal_in_line.drop_in_column(2, 'X')
-        board_four_equal_in_line.drop_in_column(3, 'X')
+        board_four_equal_in_line0.drop_in_column(0, 'X')
+        board_four_equal_in_line0.drop_in_column(1, 'X')
+        board_four_equal_in_line0.drop_in_column(2, 'X')
+        board_four_equal_in_line0.drop_in_column(3, 'X')
       end
 
       it 'returns true' do
         line_index = 0
         symbol = 'X'
-        expect(board_four_equal_in_line.four_in_line?(line_index, symbol)).to eq(true)
+        expect(board_four_equal_in_line0.four_in_line?(line_index, symbol)).to eq(true)
       end
     end
 
-    context 'when there are four marks in a column that are not equal' do
-      subject(:board_four_different_in_line) { described_class.new }
+    context 'when there are four marks in a line that are not equal' do
+      subject(:board_four_different_in_line0) { described_class.new }
 
       before do
-        board_four_different_in_line.drop_in_column(0, 'X')
-        board_four_different_in_line.drop_in_column(1, 'X')
-        board_four_different_in_line.drop_in_column(2, 'O')
-        board_four_different_in_line.drop_in_column(3, 'O')
+        board_four_different_in_line0.drop_in_column(0, 'X')
+        board_four_different_in_line0.drop_in_column(1, 'X')
+        board_four_different_in_line0.drop_in_column(2, 'O')
+        board_four_different_in_line0.drop_in_column(3, 'O')
       end
 
       it 'returns false' do
         line_index = 0
         symbol = 'X'
-        expect(board_four_different_in_line.four_in_line?(line_index, symbol)).to eq(false)
+        expect(board_four_different_in_line0.four_in_line?(line_index, symbol)).to eq(false)
       end
     end
   end
