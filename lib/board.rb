@@ -16,6 +16,12 @@ class Board
     end
   end
 
+  def last_occupied_position(col_index)
+    column_occupied = @columns[col_index].compact
+
+    column_occupied.empty? ? nil : column_occupied.length - 1
+  end
+
   def column_available?(col_index) = @columns[col_index].any?
 
   def full? = @columns.all?(&:all?)

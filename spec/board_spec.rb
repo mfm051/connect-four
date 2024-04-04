@@ -46,6 +46,25 @@ describe Board do
     end
   end
 
+  describe '#last_occupied_position' do
+    context 'when column is not empty' do
+      subject(:board_col0_2full) { described_class.new }
+      before { 2.times { board_col0_2full.drop_in_column(0, 'X') } }
+
+      it 'returns index of last occupied position' do
+        expect(board_col0_2full.last_occupied_position(0)).to eq(1)
+      end
+    end
+
+    context 'when column is empty' do
+      subject(:board_col0_empty) { described_class.new }
+
+      it 'returns nil' do
+        expect(board_col0_empty.last_occupied_position(0)).to be_nil
+      end
+    end
+  end
+
   describe '#column_available?' do
     subject(:board_0full1empty) { described_class.new }
 
