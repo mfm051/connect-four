@@ -39,9 +39,8 @@ describe Board do
 
       let(:column_full) { board_full_col.instance_variable_get(:@columns)[0] }
 
-      it 'does not change column' do
-        symbol_different = 'O'
-        expect { board_full_col.drop_in_column(0, symbol_different) }.not_to(change { column_full })
+      it 'raises an error' do
+        expect { board_full_col.drop_in_column(0, 'X') }.to raise_error StandardError
       end
     end
   end
