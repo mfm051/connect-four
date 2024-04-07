@@ -40,7 +40,13 @@ describe Board do
       let(:column_full) { board_full_col.instance_variable_get(:@columns)[0] }
 
       it 'raises an error' do
-        expect { board_full_col.drop_in_column(0, 'X') }.to raise_error StandardError
+        expect { board_full_col.drop_in_column(0, 'X') }.to raise_error ArgumentError
+      end
+    end
+
+    context 'when given column is out of board' do
+      it 'raises an error' do
+        expect { board_empty.drop_in_column(7) }.to raise_error ArgumentError
       end
     end
   end
