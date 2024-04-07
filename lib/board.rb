@@ -67,7 +67,7 @@ class Board
       four_in_cross?(col_index, line_index, symbol)
   end
 
-  def to_s
+  def show
     puts "0 1 2 3 4 5 6\n"
     lines.reverse.each do |line| # Lines in reverse so that the first is at the bottom
       line_marks = line.map { |mark| mark.nil? ? '⚬' : mark }

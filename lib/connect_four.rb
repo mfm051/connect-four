@@ -21,7 +21,11 @@ class ConnectFour
     retry
   end
 
-  def game_over? = @board.four_complete?(@current_column, @current_player)
+  def game_over?
+    return false if @current_column.nil?
+
+    @board.four_complete?(@current_column, @current_player)
+  end
 
   def rotate_player
     return @current_player = @player1 if @current_player == @player2
@@ -30,12 +34,19 @@ class ConnectFour
   end
 
   def game_round
-    puts @board
-    puts "Current player: #{@current_player}"
+    @board.show
+    puts "\nCurrent player: #{@current_player}\n\n"
     pick_column
-    return puts "#{@current_player} wins!" if game_over?
+    return winner_greeting if game_over?
 
     rotate_player
     puts "It's a draw!" if @board.full?
+  end
+
+  private
+
+  def winner_greeting
+    puts "\n#{@current_player} wins!\n\n"
+    @board.show
   end
 end
