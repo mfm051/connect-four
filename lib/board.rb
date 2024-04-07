@@ -9,8 +9,8 @@ class Board
   def drop_in_column(col_index, symbol)
     column_to_drop = @columns[col_index]
 
-    raise ArgumentError, 'Column already full' if column_to_drop.compact.length == 6
     raise ArgumentError, 'Out of board' if col_index.negative? || col_index > 6
+    raise ArgumentError, 'Column already full' if column_to_drop.compact.length == 6
 
     column_to_drop.each_with_index do |element, i|
       next unless element.nil?
