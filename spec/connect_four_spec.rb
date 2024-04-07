@@ -9,23 +9,33 @@ describe ConnectFour do
     let(:board) { connect_four.instance_variable_get(:@board) }
     let(:current_player) { connect_four.instance_variable_get(:@current_player) }
 
+    before do
+      allow(connect_four).to receive(:gets).and_return '0'
+    end
+
     it 'sends message to mark board' do
-      col_to_drop = 0
-      expect(board).to receive(:drop_in_column).with(col_to_drop, current_player)
-      connect_four.pick_column(col_to_drop)
+      expect(board).to receive(:drop_in_column)
+      connect_four.pick_column
+    end
+
+    it 'changes current_column' do
+      expect { connect_four.pick_column }.to change { connect_four.instance_variable_get(:@current_column) }.to 0
     end
   end
 
   describe '#game_over?' do
     let(:board) { connect_four.instance_variable_get(:@board) }
     let(:current_player) { connect_four.instance_variable_get(:@current_player) }
-    let(:col_to_pick) { 0 }
 
-    before { connect_four.pick_column(col_to_pick) }
+    before do
+      allow(connect_four).to receive(:gets).and_return '0'
+      connect_four.pick_column
+    end
 
     it 'sends message to test if current move completes four in any direction' do
-      expect(board).to receive(:four_complete?).with(col_to_pick, current_player)
-      connect_four.game_over?(col_to_pick)
+      current_column = connect_four.instance_variable_get(:@current_column)
+      expect(board).to receive(:four_complete?).with(current_column, current_player)
+      connect_four.game_over?
     end
   end
 
