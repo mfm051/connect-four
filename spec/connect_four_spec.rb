@@ -15,4 +15,17 @@ describe ConnectFour do
       connect_four.pick_column(col_to_drop)
     end
   end
+
+  describe '#game_over?' do
+    let(:board) { connect_four.instance_variable_get(:@board) }
+    let(:current_player) { connect_four.instance_variable_get(:@current_player) }
+    let(:col_to_pick) { 0 }
+
+    before { connect_four.pick_column(col_to_pick) }
+
+    it 'sends message to test if current move completes four in any direction' do
+      expect(board).to receive(:four_complete?).with(col_to_pick, current_player)
+      connect_four.game_over?(col_to_pick)
+    end
+  end
 end

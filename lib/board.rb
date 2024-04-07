@@ -58,6 +58,14 @@ class Board
     false
   end
 
+  def four_complete?(col_index, symbol)
+    line_index = last_occupied_position(col_index)
+
+    four_in_column?(col_index, symbol) ||
+      four_in_line?(line_index, symbol) ||
+      four_in_cross?(col_index, line_index, symbol)
+  end
+
   def to_s
     puts "0 1 2 3 4 5 6\n"
     lines.reverse.each do |line| # Lines in reverse so that the first is at the bottom

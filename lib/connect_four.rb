@@ -14,4 +14,6 @@ class ConnectFour
   def pick_column(col_index)
     @board.drop_in_column(col_index, @current_player)
   end
+
+  def game_over?(col_index) = @board.four_complete?(col_index, @current_player)
 end
