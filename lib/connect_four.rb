@@ -16,4 +16,10 @@ class ConnectFour
   end
 
   def game_over?(col_index) = @board.four_complete?(col_index, @current_player)
+
+  def rotate_player
+    return @current_player = @player1 if @current_player == @player2
+
+    @current_player = @player2
+  end
 end

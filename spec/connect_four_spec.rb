@@ -28,4 +28,14 @@ describe ConnectFour do
       connect_four.game_over?(col_to_pick)
     end
   end
+
+  describe '#rotate_player' do
+    subject(:game_oneX_twoO) { described_class.new('X', 'O') }
+
+    it 'changes current player' do
+      expect { game_oneX_twoO.rotate_player }.to change {
+                                                   game_oneX_twoO.instance_variable_get(:@current_player)
+                                                 }.from('X').to 'O'
+    end
+  end
 end
