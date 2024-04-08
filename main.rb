@@ -23,3 +23,5 @@ while game_start == true
   puts "\nContinue? [y/n]\n"
   game_start = false unless gets.chomp == 'y'
 end
+
+puts "\n\nGoodbye o/\n\n"
